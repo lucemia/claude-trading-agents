@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "claude-trading-agents"
+version = "0.1.0"
+description = "Multi-agent trading analysis as a Claude Code skill — no external LLM API cost"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "yfinance>=0.2.63",
+    "pandas>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "requests>=2.32.0",
+]
