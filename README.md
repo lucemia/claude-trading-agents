@@ -83,6 +83,10 @@ cp .claude/commands/trading-analysis.md ~/.claude/commands/
 
 Then update the script path in `~/.claude/commands/trading-analysis.md` to match your local clone path.
 
+## Inspiration
+
+Inspired by [TradingAgents](https://github.com/TauricResearch/TradingAgents) — a multi-agent LLM trading framework by Tauric Research. This project adapts their analyst pipeline design as a native Claude Code plugin, replacing the LangGraph/OpenAI stack with Claude's built-in `Agent` tool and yfinance for free market data.
+
 ## License
 
 MIT
