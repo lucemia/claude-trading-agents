@@ -1,3 +1,8 @@
+---
+name: trading-analysis
+description: Multi-agent trading analysis for a stock ticker. Runs technical, news, fundamentals, and macro analysts in parallel, then an adversarial bull/bear debate, then Research Manager, Trader, and Portfolio Manager to produce a final BUY/SELL/HOLD decision with entry, stop, and sizing.
+---
+
 Extract the ticker symbol from $ARGUMENTS (e.g. "NVDA"). If no ticker is provided, ask the user for one before proceeding.
 
 Set TODAY to the current date in YYYY-MM-DD format.
@@ -48,13 +53,16 @@ You are a fundamentals analyst for $TICKER as of $TODAY.
 
 Fetch data:
 ```bash
-uv run --project /Users/davidchen/repo/TradingAgents python /Users/davidchen/repo/TradingAgents/scripts/fetch_market_data.py --ticker $TICKER --type fundamentals --date $TODAY
+uv run --project /Users/davidchen/repo/claude-trading-agents python /Users/davidchen/repo/claude-trading-agents/scripts/fetch_market_data.py --ticker $TICKER --type fundamentals --date $TODAY
 ```
 
-Write a fundamentals report (150-200 words) covering:
-- Valuation: trailing P/E, forward P/E, P/B vs sector norms
+Write a fundamentals report (200-250 words) covering:
+- Valuation: trailing P/E, forward P/E, PEG ratio (forward PE / earnings growth), P/B vs sector norms
 - Growth: revenue growth, earnings growth trajectory
 - Quality: gross/operating margins, ROE, free cash flow
+- Balance sheet: total debt, total cash, D/E ratio (totalDebt / (totalDebt + stockholders equity)), current ratio
+- Risk metrics: beta, short ratio
+- Quarterly financials: cite 1-2 key line items from quarterly_income_stmt and quarterly_balance_sheet (e.g. quarterly revenue, net income, total assets)
 - Analyst consensus: mean recommendation (1=Strong Buy, 5=Sell), price target vs current price
 
 End with exactly: FUNDAMENTAL SIGNAL: STRONG, FAIR, or WEAK
@@ -157,6 +165,42 @@ End with exactly: BEAR CONVICTION: HIGH, MEDIUM, or LOW
 
 Wait for Subagent 6 to complete. Collect the full bear report.
 
+**Subagent 7 — Risk Analyst:**
+```
+You are a conservative Risk Analyst. Your job is NOT to repeat what the Bull or Bear
+said — it is to stress-test the trade from a risk management perspective and surface
+factors that neither side adequately addressed.
+
+Focus on:
+- Downside scenarios: what would have to go wrong for a meaningful loss to occur?
+- Balance sheet risk: leverage (D/E ratio), liquidity (current ratio), debt obligations
+- Volatility and beta: what does high beta imply for position sizing and drawdown risk?
+- Concentration and crowding risk: is the analyst consensus too one-sided?
+- Macro tail risks: which macro signals from the macro report pose the biggest threat?
+- Any risk the Bull and Bear both glossed over
+
+Resources available:
+
+FUNDAMENTALS REPORT:
+[insert full fundamentals report from Phase 1]
+
+MACRO REPORT:
+[insert full macro report from Phase 1]
+
+BULL ARGUMENT:
+[insert full bull report]
+
+BEAR ARGUMENT:
+[insert full bear report]
+
+Write 150-200 words. Be specific — cite numbers (beta, D/E, short ratio, yield levels).
+Do not simply side with the bear. Raise risks that neither analyst addressed.
+
+End with exactly: RISK LEVEL: HIGH, MEDIUM, or LOW
+```
+
+Wait for Subagent 7 to complete. Collect the full risk report.
+
 ---
 
 ## Phase 3 — Research Manager
@@ -182,6 +226,9 @@ BULL ANALYST:
 
 BEAR ANALYST:
 [insert full bear report]
+
+RISK ANALYST:
+[insert full risk report from Subagent 7]
 
 Output your investment plan in this format:
 ```
@@ -233,6 +280,9 @@ BULL ARGUMENT:
 
 BEAR ARGUMENT:
 [insert bear report]
+
+RISK ANALYST:
+[insert full risk report]
 
 Output the final decision in this EXACT format:
 ```

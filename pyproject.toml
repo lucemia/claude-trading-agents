@@ -14,3 +14,6 @@ dependencies = [
     "python-dotenv>=1.0.0",
     "requests>=2.32.0",
 ]
+
+[tool.setuptools.packages.find]
+exclude = ["skills*", "commands*"]

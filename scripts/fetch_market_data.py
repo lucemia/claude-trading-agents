@@ -172,6 +172,33 @@ def fetch_fundamentals(ticker: str, as_of: date) -> dict:
     for k in list(data.keys()):
         if isinstance(data[k], float):
             data[k] = _safe(data[k])
+
+    def _stmt_to_dict(df):
+        if df is None or df.empty:
+            return {}
+        out = {}
+        for col in df.columns[:2]:
+            label = col.date().isoformat() if hasattr(col, "date") else str(col)
+            out[label] = {
+                str(idx): (_safe(v) if isinstance(v, float) else v)
+                for idx, v in df[col].items()
+                if v is not None and not (isinstance(v, float) and math.isnan(v))
+            }
+        return out
+
+    try:
+        data["quarterly_income_stmt"] = _stmt_to_dict(tk.quarterly_income_stmt)
+    except Exception:
+        data["quarterly_income_stmt"] = {}
+    try:
+        data["quarterly_balance_sheet"] = _stmt_to_dict(tk.quarterly_balance_sheet)
+    except Exception:
+        data["quarterly_balance_sheet"] = {}
+    try:
+        data["quarterly_cashflow"] = _stmt_to_dict(tk.quarterly_cashflow)
+    except Exception:
+        data["quarterly_cashflow"] = {}
+
     return data
 
 
