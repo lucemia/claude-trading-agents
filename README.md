@@ -5,15 +5,15 @@ Multi-agent trading analysis as a Claude Code plugin — powered entirely by you
 ## Install
 
 ```
-/plugin marketplace add lucemia/claude-trading-agents
-/plugin install claude-trading-agents
+/plugin marketplace add lucemia/trading-agents-plugin
+/plugin install trading-agents-plugin
 ```
 
 Then install the Python data dependency (fetches market data via yfinance):
 
 ```bash
-git clone https://github.com/lucemia/claude-trading-agents
-cd claude-trading-agents
+git clone https://github.com/lucemia/trading-agents-plugin
+cd trading-agents-plugin
 uv sync   # or: pip install yfinance pandas
 ```
 
@@ -74,8 +74,8 @@ All data via [yfinance](https://github.com/ranaroussi/yfinance) — free, no API
 If you prefer not to use the plugin system:
 
 ```bash
-git clone https://github.com/lucemia/claude-trading-agents
-cd claude-trading-agents
+git clone https://github.com/lucemia/trading-agents-plugin
+cd trading-agents-plugin
 uv sync
 mkdir -p ~/.claude/commands
 cp .claude/commands/trading-analysis.md ~/.claude/commands/
