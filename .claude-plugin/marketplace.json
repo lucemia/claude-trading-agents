@@ -1,0 +1,25 @@
+{
+  "name": "lucemia-claude-trading-agents",
+  "owner": {
+    "name": "lucemia",
+    "email": "davidchen@gliacloud.com"
+  },
+  "metadata": {
+    "description": "Multi-agent trading analysis for Claude Code"
+  },
+  "plugins": [
+    {
+      "name": "claude-trading-agents",
+      "description": "Multi-agent trading analysis pipeline — technical, news, fundamentals, macro, adversarial bull/bear debate, and a final BUY/SELL/HOLD decision. Powered by yfinance, no external LLM API cost.",
+      "author": {
+        "name": "lucemia"
+      },
+      "category": "productivity",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/lucemia/claude-trading-agents.git"
+      },
+      "homepage": "https://github.com/lucemia/claude-trading-agents"
+    }
+  ]
+}
